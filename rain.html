@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下雨场景</title>
+    <style>
+        html,body{
+            width:100%;height:100%;
+            background: #000;
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+<body>
+
+</body>
+<script>
+    window.onload=function(){
+        var width=document.documentElement.clientWidth;  //获取浏览器的宽高
+        var height=document.documentElement.clientHeight;
+        var speed=3;  //设置初始速度
+        var arr=[];  
+        var t=setInterval(function(){
+            document.body.style.transition="transform 2s Linear";
+            speed+=3;
+            document.body.style.transform="rotate("+(Math.sin(Math.PI/180*speed)*30)+"deg)";
+        },50);
+        for(var i=0;i<=100;i++){
+          var div=document.createElement("div");    //先创建雨滴
+          div.style.cssText="width:3px;height:8px;border-radius:50%;background:#fff;position:absolute;left:"+(50+(width-100)*Math.random())+"px;top:-100px;"
+          div.style.transition="transform 2s Linear "+Math.random()*3+"s";
+          arr.push(div);  //创建一个新的数组，将div保存到数组中
+           setTimeout(function(){
+               for(var i=0;i<arr.length;i++){
+                   arr[i].style.transform="translate(0,"+height+"px)";
+                   arr[i].addEventListener("webkitTransitionEnd",function(){  //监测时间函数停止
+                       var that=this;
+                       this.style.transition="none";
+                       this.style.transform="translate(0,0)";
+                       setTimeout(function(){
+                           that.style.transition="transform 2s Linear "+Math.random()*3+"s";
+                           that.style.transform="translate(0,"+height+"px)";
+                       },0);
+                   })
+               }
+           },0);
+            document.body.appendChild(div);
+        }
+
+    }
+</script>
+</html>

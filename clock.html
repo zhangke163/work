@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表</title>
+	<style>
+	.clock{
+		width:300px;
+		height: 300px;
+		border:2px solid #ccc;
+		box-shadow: 0 0 8px yellowgreen;
+		margin:auto;
+		position: fixed;
+		left: 0;
+		top:0;
+		bottom: 0;
+		right: 0;
+		border-radius: 50%;
+		background: yellowgreen;
+	}
+	.circle{
+		width: 10px;
+		height: 10px;
+		background: #fff;
+		border-radius: 50%;
+		position: absolute;
+		left: 145px;
+		top:144px;
+	}
+	</style>
+	<script>
+		window.onload=function(){
+			var clock=document.querySelector(".clock");
+			draw();
+				var nowtime=new Date();
+				var h=nowtime.getHours();
+				var m=nowtime.getMinutes();
+				var s=nowtime.getSeconds();
+			var hours=zhen(5,70,"#000",h*30+m*6/12);
+			var minutes=zhen(5,90,"#333",m*6);
+			var seconds=zhen(3,115,"#ccc",s*6);
+			// 绘制表盘
+			function draw(){
+				var widths,heights;
+				for(var i=0;i<60;i++){
+					if(i%5==0){
+						widths=6;
+						heights=10;
+					}else{
+						widths=2;
+						heights=6;
+					}
+					var div=document.createElement("div");
+					div.style.cssText="width:"+widths+"px;height:"+heights+"px;background:#222;position:absolute;left:147px;top:0;";
+					div.style.transformOrigin="center 150px";
+					div.style.transform="rotate("+i*6+"deg)";
+					clock.appendChild(div);
+				}
+			}
+
+			/*时针 分针 秒针*/
+			function zhen(wid,hei,color,du){
+				var lefts=(300-wid)/2;
+				var tops=(150-hei);
+				var div=document.createElement("div");
+	div.style.cssText="width:"+wid+"px;height:"+hei+"px;background:"+color+";position:absolute;left:"+lefts+"px;top:"+tops+"px;";
+				div.style.transformOrigin="center bottom";
+				div.style.transform="rotate("+du+"deg)";
+				clock.appendChild(div);
+				return div;  //这是一个函数要将结果返回才能使用
+			}
+
+			// 动起来    重新获取当前的时间并进行赋值
+			setInterval(function(){
+				var nowtime=new Date();
+				var h=nowtime.getHours();
+				var m=nowtime.getMinutes();
+				var s=nowtime.getSeconds();
+				hours.style.transform="rotate("+(h*30+m*6/12)+"deg)";
+				minutes.style.transform="rotate("+m*6+"deg)";
+				seconds.style.transform="rotate("+s*6+"deg)";
+			},1000)
+		}
+	</script>
+</head>
+<body>
+	<div class="clock">
+		<div class="circle"></div>
+	</div>
+</body>
+</html>
